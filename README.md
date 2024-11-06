@@ -1,4 +1,4 @@
-# Certified Ethical Hacker | Tourism Enthusiast | Snake Rescuer**
+# Certified Ethical Hacker | Tourism Enthusiast | Snake Rescuer
 
 - **LinkedIn**: [linkedin.com/shaiokhsahariar](https://www.linkedin.com/in/shaiokhsahariar)
 - **Email**: [contact.shaiokh@gmail.com](mailto:contact.shaiokh@gmail.com)
