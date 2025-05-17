@@ -1,64 +1,45 @@
-# Certified Ethical Hacker | Tourism Enthusiast | Snake Rescuer
+# Md. Shaiokh Sahariar Haque
 
-- **LinkedIn**: [linkedin.com/shaiokhsahariar](https://www.linkedin.com/in/shaiokhsahariar)
-- **Email**: [contact.shaiokh@gmail.com](mailto:contact.shaiokh@gmail.com)
-- **University Email**: [s2210738137@ru.ac.bd](mailto:s2210738137@ru.ac.bd)
+**BBA in Tourism & Hospitality Management | Certified Ethical Hacker | Wildlife Conservationist | Tech Enthusiast**
 
 ---
 
-## 📚 Education
-- **University of Rajshahi**  
-  *BBA in Tourism and Hospitality Management*  
-  Nov 2022 - Present, Rajshahi, Bangladesh
+## About Me
 
-- **Rajshahi University School and College**  
-  *HSC in Science*  
-  Jul 2018 - Jan 2021, GPA: 5.00 / 5.00, Rajshahi, Bangladesh
-
-- **Shiroil Government High School, Rajshahi**  
-  *SSC in Science*  
-  Jan 2013 - May 2018, GPA: 5.00 / 5.00, Rajshahi, Bangladesh
+I am a multidisciplinary learner passionate about merging technology, nature, and ancient heritage. With a background in Tourism and Hospitality Management at the University of Rajshahi, I combine academic insights with wildlife conservation, cybersecurity, and innovative tech-based storytelling to bring forward creative, sustainable, and impactful ideas.
 
 ---
 
-## 📜 Coursework
-- **Undergraduate**:  
-  Fundamental of Tourism and Hospitality
-  Introduction to Business
-  Bangladesh Studies
-  Macroeconomics
-  Principles and Practices of Accounting
-  First Aid, Safety and Security
-  Business Communication
-  Principles of Management
-  Business Mathematics
+## Projects
+
+- **Smart Train Cabin**: An infotainment solution for long-distance train passengers in Bangladesh featuring interactive cultural storytelling, 360° virtual tours, and multilingual support.
+
+- **Systematic Literature Reviews**:
+  - *Digital Transformation in the Tourism Industry Post-Pandemic* (Using PRISMA, VOSviewer)
+  - *Health and Environmental Impacts of Lead-Based Radiation Shielding*
+
+- **Bug Bounty Learning**: Diving into reconnaissance, scanning, and ethical hacking to re-engage with cybersecurity.
 
 ---
 
-## 💻 Skills
-- **Programming**: Java, Shell, Python, JavaScript, C, HTML, CSS.
-- **Ethical Hacking**: Networking, OS, Penetration Testing, Vulnerability Assessment, Web Application Security.
-- **Microsoft Office**: Word, Excel, PowerPoint.
+## Skills
+
+- **Technical**: Python, HTML/CSS, JavaScript (basic), Kali Linux, Burp Suite, Nmap, Wireshark, Recon-ng
+
+- **Data Analysis**: SPSS, NVivo, VOSviewer
+
+- **Research Tools**: PRISMA, Zotero, Google Scholar, Literature Matrix
+
+- **Design & Animation**: Adobe Illustrator, Adobe Animate, Canva
 
 ---
 
-## 💼 Experience
-- **Kelvin Security**  
-  *Ethical Hacker*  
-  Jan 2018 - Sep 2020, New York, NY
+## Contact
+
+- **Email**: [s2210738137@ru.ac.bd](mailto:s2210738137@ru.ac.bd)
+
+- **LinkedIn**: [Md. Shaiokh Sahariar Haque](https://www.linkedin.com/in/sahariar-haque/)
 
 ---
 
-## 🏆 Awards
-- **2018**: National Bangladesh Olympiad on Astronomy and Astrophysics
-
----
-
-## 🤲 Volunteering
-- **2022 - Present**: Snake Rescuer at Deep Ecology and Snake Conservation Foundation
-- **2023**: Training in First Aid, Emergency Response, and Rescue
-- **Sep 2023**: Organizer of Snake Awareness Program at School
-
----
-
-_Last Updated on 6th November 2024_
+*“Think deeply, act boldly, and conserve wisely.”*
