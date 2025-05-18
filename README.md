@@ -1,12 +1,10 @@
-# Md. Shaiokh Sahariar Haque
-
-**BBA in Tourism & Hospitality Management | Certified Ethical Hacker | Wildlife Conservationist | Tech Enthusiast**
+BBA in Tourism & Hospitality Management | Certified Ethical Hacker | Wildlife Conservationist | Tech Enthusiast
 
 ---
 
 ## About Me
 
-I’m Md. Shaiokh Sahariar Haque, currently pursuing a BBA in Tourism and Hospitality Management at the [University of Rajshahi](https://www.ru.ac.bd/). Alongside my academic background, I’m a Certified Ethical Hacker (CEH) with a strong interest in cybersecurity, ethical hacking, and digital systems. I enjoy exploring the intersection of technology and user experience, especially how smart solutions can improve tourism and other real-world sectors. Beyond tech, I’m passionate about wildlife conservation, astronomy, and ancient heritage — interests that inspire creativity and depth in my work. I aim to merge my knowledge in business and technology to become an innovative, impact-driven entrepreneur.
+I am currently pursuing a Bachelor of Business Administration (BBA) degree in Tourism and Hospitality Management at the University of Rajshahi. In addition to my academic studies, I am a Certified Ethical Hacker (CEH) and a web penetration tester. I aspire to integrate technology with the tourism and hospitality industry and intend to establish a startup in this interdisciplinary field.
 
 ---
 
