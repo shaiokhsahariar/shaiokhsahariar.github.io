@@ -6,7 +6,7 @@
 
 ## About Me
 
-I am a multidisciplinary learner passionate about merging technology, nature, and ancient heritage. With a background in Tourism and Hospitality Management at the University of Rajshahi, I combine academic insights with wildlife conservation, cybersecurity, and innovative tech-based storytelling to bring forward creative, sustainable, and impactful ideas.
+I’m Md. Shaiokh Sahariar Haque, currently pursuing a BBA in Tourism and Hospitality Management at the University of Rajshahi. Alongside my academic background, I’m a Certified Ethical Hacker (CEH) with a strong interest in cybersecurity, ethical hacking, and digital systems. I enjoy exploring the intersection of technology and user experience, especially how smart solutions can improve tourism and other real-world sectors. Beyond tech, I’m passionate about wildlife conservation, astronomy, and ancient heritage — interests that inspire creativity and depth in my work. I aim to merge my knowledge in business and technology to become an innovative, impact-driven entrepreneur.
 
 ---
 
