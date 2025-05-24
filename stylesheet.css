@@ -185,3 +185,15 @@ img {
   height: auto;
   display: block;
 }
+
+.section-hr {
+  width: 100%;
+  max-width: 800px;
+  height: 2px;
+  background-color: #FF4D00;
+  border: none;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+
