@@ -3,200 +3,155 @@
 <head>
   <meta charset="UTF-8">
   <title>Md. Shaiokh Sahariar Haque</title>
-  <meta name="author" content="Shaiokh Sahariar">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <script>
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-    }
-  </script>
+  <!-- Font and Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
 
   <style>
     body {
-      font-family: 'Courier New', Courier, monospace;
-      background-color: white;
-      color: black;
-      transition: 0.3s ease;
+      margin: 0;
+      background-color: #0d1117;
+      color: #c9d1d9;
+      font-family: 'Fira Code', monospace;
+      line-height: 1.6;
+      padding: 40px 20px;
     }
 
     a {
-      color: darkblue;
+      color: #58a6ff;
+      text-decoration: none;
     }
 
-    body.dark-mode {
-      background-color: #121212;
-      color: #00FF00;
+    a:hover {
+      text-decoration: underline;
     }
 
-    body.dark-mode a {
-      color: #00FFFF;
+    .container {
+      max-width: 900px;
+      margin: auto;
     }
 
-    table {
-      width: 100%;
-      max-width: 800px;
-      margin-inline-start: auto;
-      margin-inline-end: auto;
-      border: 0;
-      border-spacing: 0;
-      border-collapse: separate;
+    h1 {
+      color: #f0883e;
+      font-size: 2.5em;
+      margin-bottom: 0;
     }
 
     h2 {
-      color: #FF4D00;
-      text-align: left;
+      color: #ffa657;
+      margin-top: 2.5em;
+      border-bottom: 1px solid #30363d;
+      padding-bottom: 0.3em;
     }
 
-    hr {
-      border: none;
-      height: 1px;
-      background: #444;
-      margin-bottom: 20px;
+    ul {
+      padding-left: 20px;
     }
 
-    #toggleBtn {
-      margin: 20px auto;
-      display: block;
-      background-color: #222;
-      color: #00FF00;
-      border: 1px solid #00FF00;
-      padding: 8px 16px;
-      font-family: 'Courier New', monospace;
-      cursor: pointer;
+    li {
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    .section {
+      margin-bottom: 2em;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 14px;
+      color: #8b949e;
+      margin-top: 60px;
     }
   </style>
 </head>
 
 <body>
+  <div class="container">
+    <!-- Header -->
+    <h1>Md. Shaiokh Sahariar Haque</h1>
+    <p>
+      Web Penetration Tester | Tourism Researcher | Wildlife Conservationist<br>
+      <a href="mailto:contact.shaiokh@gmail.com">contact.shaiokh@gmail.com</a> | 
+      <a href="https://www.linkedin.com/in/shaiokhsahariar/">LinkedIn</a>
+    </p>
 
-  <button id="toggleBtn" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    <!-- About Me -->
+    <div class="section">
+      <h2>About Me</h2>
+      <p>
+        I am currently pursuing a Bachelor of Business Administration (BBA) in 
+        <a href="https://www.ru.ac.bd/thm/" target="_blank">Tourism and Hospitality Management</a> 
+        at the University of Rajshahi. I am also a tourism researcher exploring the intersection of technology, cultural heritage, and sustainable travel practices.
+        In addition to my academic studies, I am a Certified Ethical Hacker (CEH) and a web penetration tester. I aspire to integrate technology with the tourism and hospitality industry and intend to establish a startup in this interdisciplinary field.
+        Beyond academics, I am a wildlife conservationist with a specialization in snake rescue and community awareness. I also have a deep interest in history, reflected in my hobby of collecting ancient coins, banknotes, and other historical artifacts.
+      </p>
+    </div>
 
-  <!-- About Me -->
-  <table>
-    <tr>
-      <td>
-        <h2>About Me</h2>
-        <hr>
-        <p>
-          I am currently pursuing a Bachelor of Business Administration (BBA)
-          in <a href="https://www.ru.ac.bd/thm/" target="_blank">Tourism and Hospitality Management</a> at the 
-          University of Rajshahi. I am also a tourism researcher exploring the intersection of technology, cultural heritage, and sustainable travel practices.
-          In addition to my academic studies, I am a Certified Ethical Hacker (CEH) and a web penetration tester. I aspire to integrate technology with the tourism and hospitality industry and intend to establish a startup in this interdisciplinary field.
-          Beyond my academic and professional pursuits, I have a strong interest in history and heritage, reflected in my passion for collecting ancient coins, banknotes, and other historical artifacts. I also actively volunteer as a snake rescuer and environmental awareness advocate.
-        </p>
-      </td>
-    </tr>
-  </table>
+    <!-- Education -->
+    <div class="section">
+      <h2>Education</h2>
+      <ul>
+        <li><strong>University of Rajshahi</strong> — BBA in Tourism and Hospitality Management<br>Nov 2022 – Present | Rajshahi, Bangladesh</li>
+        <li><strong>Rajshahi University School and College</strong> — HSC in Science<br>Jul 2018 – Jan 2021 | GPA: 5.00</li>
+        <li><strong>Shiroil Government High School</strong> — SSC in Science<br>Jan 2013 – May 2018 | GPA: 5.00</li>
+      </ul>
+    </div>
 
-  <!-- Education -->
-  <table>
-    <tr>
-      <td>
-        <h2>Education</h2>
-        <hr>
-        <ul>
-          <li><strong>University of Rajshahi</strong><br>BBA in Tourism and Hospitality Management<br>Nov 2022 – Present | Rajshahi, Bangladesh</li>
-          <li><strong>Rajshahi University School and College</strong><br>HSC in Science<br>Jul 2018 – Jan 2021 | Rajshahi, Bangladesh</li>
-          <li><strong>Shiroil Government High School</strong><br>SSC in Science<br>Jan 2013 – May 2018 | Rajshahi, Bangladesh</li>
-        </ul>
-      </td>
-    </tr>
-  </table>
+    <!-- Technical Skills -->
+    <div class="section">
+      <h2>Technical Skills</h2>
+      <ul>
+        <li><strong>Web App Security:</strong> OWASP Top 10, Burp Suite, API Testing, SSRF, XXE, JWT exploits</li>
+        <li><strong>Mobile Security:</strong> Android Reverse Engineering (Frida, Jadx), iOS Static Analysis (MobSF, Objection)</li>
+        <li><strong>Tools & Automation:</strong> Python (scripts, automation), Nmap, Metasploit, SQLMap</li>
+      </ul>
+    </div>
 
-  <!-- Technical Skills -->
-  <table>
-    <tr>
-      <td>
-        <h2>Technical Skills</h2>
-        <hr>
-        <ul>
-          <li><strong>Web App Security</strong>
-            <ul>
-              <li>Expert: OWASP Top 10, Burp Suite, API Testing</li>
-              <li>Advanced: SSRF, XXE, JWT exploits</li>
-            </ul>
-          </li>
-          <li><strong>Mobile Security</strong>
-            <ul>
-              <li>Android Reverse Engineering (Frida, Jadx)</li>
-            </ul>
-          </li>
-          <li><strong>Tools & Automation</strong>
-            <ul>
-              <li>Python (Exploit scripts, automation)</li>
-              <li>Nmap, Metasploit, SQLMap</li>
-            </ul>
-          </li>
-        </ul>
-      </td>
-    </tr>
-  </table>
+    <!-- Certifications -->
+    <div class="section">
+      <h2>Certifications</h2>
+      <ul>
+        <li>Certified Ethical Hacker (CEH) – EC-Council</li>
+        <li>NSE 1 Network Security Associate – Fortinet</li>
+        <li>CompTIA CSA+ – Infosec4TC</li>
+        <li>Aspire Leadership Program – Harvard Aspire Institute <em>(Ongoing)</em></li>
+        <li>CS50: Introduction to Computer Science – HarvardX (edX) <em>(Ongoing)</em></li>
+      </ul>
+    </div>
 
-  <!-- Certifications -->
-  <table>
-    <tr>
-      <td>
-        <h2>Certifications</h2>
-        <hr>
-        <ul>
-          <li>Certified Ethical Hacker (CEH) – EC-Council</li>
-          <li>NSE 1 Network Security Associate – FORTINET</li>
-          <li>CompTIA CSA+ – Infosec4TC</li>
-          <li>Aspire Leadership Program – Harvard Aspire Institute <i>(Ongoing)</i></li>
-          <li>CS50: Introduction to Computer Science – HarvardX (edX) <i>(Ongoing)</i></li>
-        </ul>
-      </td>
-    </tr>
-  </table>
+    <!-- Projects -->
+    <div class="section">
+      <h2>Projects</h2>
+      <ul>
+        <li><strong>Amar Bangladesh Tour</strong> – Developing a tourism platform featuring detailed guidance across all 64 districts of Bangladesh. <em>(Ongoing)</em></li>
+      </ul>
+    </div>
 
-  <!-- Projects -->
-  <table>
-    <tr>
-      <td>
-        <h2>Projects</h2>
-        <hr>
-        <ul>
-          <li><strong>Amar Bangladesh Tour</strong> – Developing a comprehensive tourism platform featuring detailed travel guidance across all 64 districts of Bangladesh. <i>(Ongoing)</i></li>
-        </ul>
-      </td>
-    </tr>
-  </table>
+    <!-- Volunteer Activities -->
+    <div class="section">
+      <h2>Volunteer Activities</h2>
+      <ul>
+        <li><strong>Snake Rescuer</strong> – Deep Ecology and Snake Conservation Foundation (Since 2022)</li>
+        <li><strong>First Aid & Emergency Response Training</strong> – Completed in 2023</li>
+        <li><strong>Organizer, Snake Awareness Program</strong> – Conducted school events in Sep 2023</li>
+      </ul>
+    </div>
 
-  <!-- Volunteer Activities -->
-  <table>
-    <tr>
-      <td>
-        <h2>Volunteer Activities</h2>
-        <hr>
-        <ul>
-          <li><strong>Snake Rescuer</strong> – Active volunteer with Deep Ecology and Snake Conservation Foundation since 2022.</li>
-          <li><strong>First Aid & Emergency Training</strong> – Completed in 2023 to support wildlife and human emergencies.</li>
-          <li><strong>Organizer, Snake Awareness Program</strong> – Hosted sessions at schools in Sep 2023 for wildlife safety awareness.</li>
-        </ul>
-      </td>
-    </tr>
-  </table>
+    <!-- Publications -->
+    <div class="section">
+      <h2>Publications</h2>
+      <p>Publication details will be available soon. Research projects are currently in progress.</p>
+    </div>
 
-  <!-- Publications -->
-  <table>
-    <tr>
-      <td>
-        <h2>Publications</h2>
-        <hr>
-        <p>Publication details will be available soon. Research projects are currently in progress.</p>
-      </td>
-    </tr>
-  </table>
-
-  <!-- Footer -->
-  <table style="text-align:center; margin-top:40px;">
-    <tr>
-      <td style="font-size:14px; color:gray;">
-        &copy; 2025 Md. Shaiokh Sahariar Haque. All rights reserved.
-      </td>
-    </tr>
-  </table>
-
+    <!-- Footer -->
+    <div class="footer">
+      &copy; 2025 Md. Shaiokh Sahariar Haque. All rights reserved.
+    </div>
+  </div>
 </body>
 </html>
