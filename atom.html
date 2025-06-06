@@ -1,114 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>3D Atom Model</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background-color: #000;
-    }
-    canvas {
-      display: block;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Atom Model</title>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            background-color: #000;
+        }
+        canvas { 
+            display: block; 
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-family: Arial, sans-serif;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
-  <!-- Three.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+    <div id="info">3D Atom Model - Click and drag to rotate | Scroll to zoom</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.body.appendChild(renderer.domElement);
 
-  <script>
-    // Scene setup
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 1000);
-    camera.position.z = 15;
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x404040);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(1, 1, 1);
+        scene.add(directionalLight);
 
-    const renderer = new THREE.WebGLRenderer({antialias: true});
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+        // Orbit controls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
 
-    // Orbit controls
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        // Camera position
+        camera.position.z = 30;
 
-    // Lighting
-    const light = new THREE.PointLight(0xffffff, 1);
-    light.position.set(10, 10, 10);
-    scene.add(light);
-
-    scene.add(new THREE.AmbientLight(0x404040));
-
-    // Nucleus
-    const nucleusGeometry = new THREE.SphereGeometry(1.2, 32, 32);
-    const nucleusMaterial = new THREE.MeshPhongMaterial({color: 0xff3333});
-    const nucleus = new THREE.Mesh(nucleusGeometry, nucleusMaterial);
-    scene.add(nucleus);
-
-    // Electron orbit groups
-    const electronOrbits = [];
-
-    // Electron colors
-    const electronColors = [0x33ccff, 0x66ff66, 0xffff66];
-
-    // Create electrons in 3 orbits
-    for (let i = 1; i <= 3; i++) {
-      const orbitGroup = new THREE.Group();
-      scene.add(orbitGroup);
-
-      const orbitRadius = i * 2.5;
-
-      const numElectrons = i * 2;
-
-      for (let j = 0; j < numElectrons; j++) {
-        const angle = (j / numElectrons) * Math.PI * 2;
-        const electronGeometry = new THREE.SphereGeometry(0.2, 16, 16);
-        const electronMaterial = new THREE.MeshPhongMaterial({
-          color: electronColors[(i + j) % electronColors.length],
+        // Create nucleus
+        const nucleusGeometry = new THREE.SphereGeometry(2, 32, 32);
+        const nucleusMaterial = new THREE.MeshPhongMaterial({ 
+            color: 0xff3333,
+            emissive: 0xaa0000,
+            emissiveIntensity: 0.2,
+            specular: 0xffffff,
+            shininess: 30
         });
-        const electron = new THREE.Mesh(electronGeometry, electronMaterial);
+        const nucleus = new THREE.Mesh(nucleusGeometry, nucleusMaterial);
+        scene.add(nucleus);
 
-        electron.position.set(
-          orbitRadius * Math.cos(angle),
-          0,
-          orbitRadius * Math.sin(angle)
-        );
+        // Create electron orbits
+        const orbits = [];
+        const electrons = [];
+        
+        // Parameters for orbits
+        const orbitParams = [
+            { radius: 8, color: 0x33ff33, speed: 0.02, tiltX: 0.3, tiltY: 0.1, electronCount: 2 },
+            { radius: 12, color: 0x3399ff, speed: 0.015, tiltX: 0.5, tiltY: 0.2, electronCount: 6 },
+            { radius: 16, color: 0xff33ff, speed: 0.01, tiltX: 0.2, tiltY: 0.4, electronCount: 2 }
+        ];
 
-        orbitGroup.add(electron);
-      }
+        // Create orbits and electrons
+        orbitParams.forEach((params, orbitIndex) => {
+            // Create orbit path (visual representation)
+            const orbitGeometry = new THREE.TorusGeometry(params.radius, 0.05, 16, 100);
+            const orbitMaterial = new THREE.MeshBasicMaterial({ 
+                color: params.color,
+                transparent: true,
+                opacity: 0.3
+            });
+            const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
+            
+            // Tilt the orbit
+            orbit.rotation.x = params.tiltX;
+            orbit.rotation.y = params.tiltY;
+            
+            scene.add(orbit);
+            orbits.push({ mesh: orbit, speed: params.speed });
 
-      orbitGroup.rotationAxis = new THREE.Vector3(
-        Math.random(),
-        Math.random(),
-        Math.random()
-      ).normalize();
+            // Create electrons for this orbit
+            for (let i = 0; i < params.electronCount; i++) {
+                const electronGeometry = new THREE.SphereGeometry(0.5, 16, 16);
+                const electronMaterial = new THREE.MeshPhongMaterial({ 
+                    color: 0xffff00,
+                    emissive: 0xffff33,
+                    emissiveIntensity: 0.5,
+                    specular: 0xffffff,
+                    shininess: 50
+                });
+                const electron = new THREE.Mesh(electronGeometry, electronMaterial);
+                
+                // Position electrons evenly around the orbit
+                const angle = (i / params.electronCount) * Math.PI * 2;
+                electron.position.x = params.radius * Math.cos(angle);
+                electron.position.y = params.radius * Math.sin(angle) * Math.cos(params.tiltX);
+                electron.position.z = params.radius * Math.sin(angle) * Math.sin(params.tiltY);
+                
+                // Store additional properties
+                electron.userData = {
+                    orbitIndex: orbitIndex,
+                    angle: angle,
+                    speed: params.speed
+                };
+                
+                scene.add(electron);
+                electrons.push(electron);
+            }
+        });
 
-      orbitGroup.rotationSpeed = 0.01 + Math.random() * 0.01;
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Rotate nucleus
+            nucleus.rotation.x += 0.005;
+            nucleus.rotation.y += 0.007;
+            
+            // Rotate orbits
+            orbits.forEach(orbit => {
+                orbit.mesh.rotation.z += orbit.speed * 0.5;
+            });
+            
+            // Move electrons in their orbits
+            electrons.forEach(electron => {
+                const orbit = orbits[electron.userData.orbitIndex];
+                electron.userData.angle += electron.userData.speed;
+                
+                const params = orbitParams[electron.userData.orbitIndex];
+                electron.position.x = params.radius * Math.cos(electron.userData.angle);
+                electron.position.y = params.radius * Math.sin(electron.userData.angle) * Math.cos(params.tiltX);
+                electron.position.z = params.radius * Math.sin(electron.userData.angle) * Math.sin(params.tiltY);
+            });
+            
+            controls.update();
+            renderer.render(scene, camera);
+        }
 
-      electronOrbits.push(orbitGroup);
-    }
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
 
-    // Animate
-    function animate() {
-      requestAnimationFrame(animate);
-
-      electronOrbits.forEach((orbitGroup) => {
-        orbitGroup.rotateOnAxis(orbitGroup.rotationAxis, orbitGroup.rotationSpeed);
-      });
-
-      controls.update();
-      renderer.render(scene, camera);
-    }
-
-    animate();
-
-    // Resize
-    window.addEventListener("resize", () => {
-      camera.aspect = window.innerWidth/window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  </script>
+        animate();
+    </script>
 </body>
 </html>
