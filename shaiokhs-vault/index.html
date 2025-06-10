@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rock-Paper-Scissors: First to 5!</title>
+    <title>Rock-Paper-Scissors: Betting Mode</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,6 +12,8 @@
             --dark: #2D3047;
             --light: #FFEDDF;
             --accent: #FF9B71;
+            --money: #4CAF50;
+            --bet: #FFC107;
         }
 
         * {
@@ -58,6 +60,79 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+
+        .balance-container {
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .balance {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--money);
+        }
+
+        .balance-value {
+            font-size: 1.8rem;
+        }
+
+        .bet-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .bet-label {
+            font-size: 1.2rem;
+            color: var(--bet);
+        }
+
+        .bet-input {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid var(--bet);
+            color: white;
+            font-size: 1.2rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            width: 100px;
+            text-align: center;
+        }
+
+        .bet-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .bet-btn {
+            background: var(--bet);
+            color: var(--dark);
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bet-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+        }
+
+        .bet-btn:disabled {
+            opacity: 0.5;
+            transform: none;
+            box-shadow: none;
+            cursor: not-allowed;
         }
 
         .scoreboard {
@@ -118,6 +193,16 @@
 
         .choice-btn:active {
             transform: scale(0.95);
+        }
+
+        .choice-btn:disabled {
+            opacity: 0.5;
+            transform: none;
+            cursor: not-allowed;
+        }
+
+        .choice-btn:disabled:hover {
+            transform: none;
         }
 
         .choice-icon {
@@ -248,6 +333,12 @@
             color: var(--accent);
         }
 
+        .money-feedback {
+            color: var(--money);
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-10px); }
@@ -265,6 +356,31 @@
 
         .bounce {
             animation: bounce 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .pulse {
+            animation: pulse 0.5s ease;
+        }
+
+        .difficulty-indicator {
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .difficulty-bar {
+            height: 100%;
+            background: linear-gradient(to right, #4CAF50, #FFC107, #FF5E5B);
+            width: 0%;
+            transition: width 0.5s ease;
         }
 
         @media (max-width: 768px) {
@@ -286,16 +402,41 @@
                 height: 100px;
                 font-size: 3rem;
             }
+
+            .balance-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .bet-container {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <h1>ROCK PAPER SCISSORS</h1>
-        <p class="subtitle">First to 5 points wins!</p>
+        <p class="subtitle">Betting Mode - Win $180 or lose $100 per round</p>
     </header>
 
     <div class="game-container">
+        <div class="balance-container">
+            <div class="balance">
+                BALANCE: $<span id="balanceValue">1000</span>
+            </div>
+            <div class="bet-container">
+                <div class="bet-label">BET:</div>
+                <input type="number" class="bet-input" id="betInput" min="100" max="1000" value="100">
+                <button class="bet-btn" id="placeBetBtn">PLACE BET</button>
+            </div>
+        </div>
+
+        <div class="difficulty-indicator">
+            <div class="difficulty-bar" id="difficultyBar"></div>
+        </div>
+
         <div class="scoreboard">
             <div class="score player-score">
                 <div>YOU</div>
@@ -314,21 +455,22 @@
         </div>
 
         <div class="choices">
-            <button class="choice-btn" data-choice="rock">
+            <button class="choice-btn" data-choice="rock" disabled>
                 <div class="choice-icon">🪨</div>
                 <div class="choice-label">ROCK</div>
             </button>
-            <button class="choice-btn" data-choice="paper">
+            <button class="choice-btn" data-choice="paper" disabled>
                 <div class="choice-icon">📄</div>
                 <div class="choice-label">PAPER</div>
             </button>
-            <button class="choice-btn" data-choice="scissors">
+            <button class="choice-btn" data-choice="scissors" disabled>
                 <div class="choice-icon">✂️</div>
                 <div class="choice-label">SCISSORS</div>
             </button>
         </div>
 
         <div class="feedback-message" id="feedback"></div>
+        <div class="money-feedback" id="moneyFeedback"></div>
     </div>
 
     <div class="result-popup" id="resultPopup">
@@ -340,6 +482,7 @@
     <audio id="winSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" preload="auto"></audio>
     <audio id="loseSound" src="https://assets.mixkit.co/sfx/preview/mixkit-retro-arcade-lose-2027.mp3" preload="auto"></audio>
     <audio id="tieSound" src="https://assets.mixkit.co/sfx/preview/mixkit-neutral-game-notification-951.mp3" preload="auto"></audio>
+    <audio id="cashSound" src="https://assets.mixkit.co/sfx/preview/mixkit-casino-win-notification-1980.mp3" preload="auto"></audio>
 
     <script>
         // DOM Elements
@@ -349,20 +492,30 @@
         const playerScoreEl = document.querySelector('.player-score .score-value');
         const computerScoreEl = document.querySelector('.computer-score .score-value');
         const feedbackEl = document.getElementById('feedback');
+        const moneyFeedbackEl = document.getElementById('moneyFeedback');
         const resultPopup = document.getElementById('resultPopup');
         const resultTitle = document.getElementById('resultTitle');
         const resultMessage = document.getElementById('resultMessage');
         const closePopupBtn = document.getElementById('closePopup');
+        const balanceValueEl = document.getElementById('balanceValue');
+        const betInput = document.getElementById('betInput');
+        const placeBetBtn = document.getElementById('placeBetBtn');
+        const difficultyBar = document.getElementById('difficultyBar');
         
         // Audio elements
         const winSound = document.getElementById('winSound');
         const loseSound = document.getElementById('loseSound');
         const tieSound = document.getElementById('tieSound');
+        const cashSound = document.getElementById('cashSound');
 
         // Game state
         let playerScore = 0;
         let computerScore = 0;
         let gameOver = false;
+        let balance = 1000;
+        let currentBet = 0;
+        let gamesPlayed = 0;
+        let difficulty = 0; // 0-100 scale
         
         // Emoji mappings
         const emojis = {
@@ -398,19 +551,62 @@
 
         // Initialize game
         function init() {
+            updateBalance();
+            
             choiceBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    if (!gameOver) {
+                    if (!gameOver && currentBet > 0) {
                         const choice = btn.dataset.choice;
                         playRound(choice);
                     }
                 });
             });
             
-            closePopupBtn.addEventListener('click', () => {
-                resetGame();
-                resultPopup.classList.remove('show');
+            placeBetBtn.addEventListener('click', placeBet);
+            betInput.addEventListener('input', validateBetInput);
+            closePopupBtn.addEventListener('click', resetGame);
+        }
+
+        // Validate bet input
+        function validateBetInput() {
+            let value = parseInt(betInput.value);
+            if (isNaN(value)) value = 100;
+            if (value < 100) value = 100;
+            if (value > balance) value = balance;
+            betInput.value = value;
+        }
+
+        // Place bet
+        function placeBet() {
+            currentBet = parseInt(betInput.value);
+            if (currentBet < 100 || currentBet > balance) {
+                currentBet = 0;
+                return;
+            }
+            
+            balance -= currentBet;
+            updateBalance();
+            
+            // Enable choice buttons
+            choiceBtns.forEach(btn => {
+                btn.disabled = false;
             });
+            
+            // Disable bet controls
+            betInput.disabled = true;
+            placeBetBtn.disabled = true;
+            
+            // Reset hands and feedback
+            playerHand.textContent = '?';
+            computerHand.textContent = '?';
+            feedbackEl.textContent = '';
+            feedbackEl.className = 'feedback-message';
+            moneyFeedbackEl.textContent = '';
+            
+            // Reset scores for this round
+            playerScore = 0;
+            computerScore = 0;
+            updateScore();
         }
 
         // Main game function
@@ -421,8 +617,8 @@
             
             // Computer "thinks" for a moment before choosing
             setTimeout(() => {
-                // Get computer choice
-                const computerChoice = getComputerChoice();
+                // Get computer choice with difficulty adjustment
+                const computerChoice = getComputerChoice(playerChoice);
                 computerHand.textContent = emojis[computerChoice];
                 computerHand.classList.add('bounce');
                 
@@ -438,9 +634,9 @@
                 showFeedback(result, playerChoice, computerChoice);
                 playResultSound(result);
                 
-                // Check for game over
-                if (playerScore >= 5 || computerScore >= 5) {
-                    endGame();
+                // Check for round over (best of 3)
+                if (playerScore >= 2 || computerScore >= 2) {
+                    endRound(result);
                 }
                 
                 // Reset animations
@@ -451,9 +647,19 @@
             }, 500);
         }
 
-        // Computer choice (random)
-        function getComputerChoice() {
+        // Computer choice with difficulty adjustment
+        function getComputerChoice(playerChoice) {
             const choices = ['rock', 'paper', 'scissors'];
+            
+            // With increasing difficulty, computer is more likely to choose the winning move
+            if (Math.random() < (difficulty / 100)) {
+                // Computer will try to counter player's choice
+                if (playerChoice === 'rock') return 'paper';
+                if (playerChoice === 'paper') return 'scissors';
+                if (playerChoice === 'scissors') return 'rock';
+            }
+            
+            // Otherwise random choice
             return choices[Math.floor(Math.random() * 3)];
         }
 
@@ -527,41 +733,121 @@
             }
         }
 
-        // End game and show results
-        function endGame() {
+        // End round and calculate winnings
+        function endRound(result) {
             gameOver = true;
+            gamesPlayed++;
             
-            resultTitle.textContent = 'GAME OVER';
+            // Calculate difficulty (increases with each game, making it harder to win)
+            difficulty = Math.min(90, Math.floor(gamesPlayed * 15));
+            difficultyBar.style.width = `${difficulty}%`;
+            
+            let winnings = 0;
+            let message = '';
             
             if (playerScore > computerScore) {
-                resultMessage.textContent = `You won ${playerScore}-${computerScore}! Congratulations!`;
+                // Player wins the round
+                winnings = Math.floor(currentBet * 1.8); // Win 1.8x the bet
+                balance += winnings;
+                message = `You won $${winnings - currentBet} (Total: $${winnings})!`;
+                moneyFeedbackEl.textContent = message;
+                moneyFeedbackEl.className = 'money-feedback';
+                cashSound.currentTime = 0;
+                cashSound.play();
+            } else {
+                // Player loses the round
+                message = `You lost $${currentBet}.`;
+                moneyFeedbackEl.textContent = message;
+                moneyFeedbackEl.className = 'money-feedback lose-feedback';
+            }
+            
+            updateBalance();
+            
+            // Check if player is broke
+            if (balance < 100) {
+                endGame();
+                return;
+            }
+            
+            // Re-enable betting for next round
+            setTimeout(() => {
+                resetRound();
+            }, 3000);
+        }
+
+        // Reset for next round
+        function resetRound() {
+            gameOver = false;
+            currentBet = 0;
+            
+            // Reset scores
+            playerScore = 0;
+            computerScore = 0;
+            updateScore();
+            
+            // Reset UI
+            playerHand.textContent = '?';
+            computerHand.textContent = '?';
+            feedbackEl.textContent = '';
+            feedbackEl.className = 'feedback-message';
+            moneyFeedbackEl.textContent = '';
+            
+            // Disable choice buttons
+            choiceBtns.forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            // Enable bet controls
+            betInput.disabled = false;
+            placeBetBtn.disabled = false;
+            
+            // Update bet input max value
+            betInput.max = balance;
+            if (parseInt(betInput.value) > balance) {
+                betInput.value = balance;
+            }
+        }
+
+        // End game and show results
+        function endGame() {
+            resultTitle.textContent = balance > 0 ? 'CONGRATULATIONS!' : 'GAME OVER';
+            
+            if (balance > 0) {
+                resultMessage.textContent = `You finished with $${balance}! Well done!`;
                 resultTitle.style.background = 'linear-gradient(to right, #4CAF50, #2E7D32)';
             } else {
-                resultMessage.textContent = `You lost ${playerScore}-${computerScore}. Better luck next time!`;
+                resultMessage.textContent = `You've run out of money after ${gamesPlayed} rounds. Better luck next time!`;
                 resultTitle.style.background = 'linear-gradient(to right, #FF5E5B, #D32F2F)';
             }
             
             resultPopup.classList.add('show');
         }
 
-        // Reset game
+        // Reset game completely
         function resetGame() {
-            playerScore = 0;
-            computerScore = 0;
+            balance = 1000;
+            gamesPlayed = 0;
+            difficulty = 0;
+            difficultyBar.style.width = '0%';
+            currentBet = 0;
             gameOver = false;
             
-            playerScoreEl.textContent = '0';
-            computerScoreEl.textContent = '0';
-            
-            playerHand.textContent = '?';
-            computerHand.textContent = '?';
-            
-            feedbackEl.textContent = '';
-            feedbackEl.className = 'feedback-message';
+            updateBalance();
+            resetRound();
+            resultPopup.classList.remove('show');
+        }
+
+        // Update balance display
+        function updateBalance() {
+            balanceValueEl.textContent = balance;
+            balanceValueEl.classList.add('pulse');
+            setTimeout(() => {
+                balanceValueEl.classList.remove('pulse');
+            }, 500);
         }
 
         // Start the game
         init();
     </script>
 </body>
-</html>
+        </html>
