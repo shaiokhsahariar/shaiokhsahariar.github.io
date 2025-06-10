@@ -1,35 +1,1133 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shaiokh's Vault</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock-Paper-Scissors: First to 5!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF5E5B;
+            --secondary: #00CECB;
+            --dark: #2D3047;
+            --light: #FFEDDF;
+            --accent: #FF9B71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 2rem;
+            background: rgba(255,255,255,0.1);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .score {
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .score-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        .player-score .score-value {
+            color: var(--secondary);
+        }
+
+        .computer-score .score-value {
+            color: var(--primary);
+        }
+
+        .choices {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            width: 100%;
+        }
+
+        .choice-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-10px);
+        }
+
+        .choice-btn:active {
+            transform: scale(0.95);
+        }
+
+        .choice-icon {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .choice-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+
+        .choice-btn:hover .choice-icon {
+            transform: scale(1.1);
+        }
+
+        .battle-area {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .player-hand, .computer-hand {
+            width: 150px;
+            height: 150px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+        }
+
+        .vs {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: bold;
+            background: var(--accent);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .result-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            color: var(--dark);
+            padding: 2rem 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 100;
+            text-align: center;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 80%;
+        }
+
+        .result-popup.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .result-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-popup {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-popup:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 94, 91, 0.4);
+        }
+
+        .feedback-message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            min-height: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .win-feedback {
+            color: var(--secondary);
+        }
+
+        .lose-feedback {
+            color: var(--primary);
+        }
+
+        .tie-feedback {
+            color: var(--accent);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .bounce {
+            animation: bounce 0.5s ease;
+        }
+
+        @media (max-width: 768px) {
+            .choices {
+                gap: 1rem;
+            }
+            
+            .choice-btn {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .choice-icon {
+                font-size: 3rem;
+            }
+            
+            .player-hand, .computer-hand {
+                width: 100px;
+                height: 100px;
+                font-size: 3rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Shaiokh's Vault</h1>
-    <p>A curated collection of ancient coins, currency notes, and stamps.</p>
-  </header>
+    <header>
+        <h1>ROCK PAPER SCISSORS</h1>
+        <p class="subtitle">First to 5 points wins!</p>
+    </header>
 
-  <main class="gallery">
-    <a href="items/coin/sample-coin.html">
-      <img src="images/coin/sample-coin.jpg" alt="Sample Coin" />
-      <h2>Sample Coin</h2>
-    </a>
-    <a href="items/note/sample-note.html">
-      <img src="images/note/sample-note.jpg" alt="Sample Note" />
-      <h2>Sample Note</h2>
-    </a>
-    <a href="items/stamp/sample-stamp.html">
-      <img src="images/stamp/sample-stamp.jpg" alt="Sample Stamp" />
-      <h2>Sample Stamp</h2>
-    </a>
-  </main>
+    <div class="game-container">
+        <div class="scoreboard">
+            <div class="score player-score">
+                <div>YOU</div>
+                <div class="score-value">0</div>
+            </div>
+            <div class="score computer-score">
+                <div>COMPUTER</div>
+                <div class="score-value">0</div>
+            </div>
+        </div>
 
-  <footer>
-    <p>© 2025 Shaiokh Sahariar Haque</p>
-  </footer>
+        <div class="battle-area">
+            <div class="player-hand">?</div>
+            <div class="vs">VS</div>
+            <div class="computer-hand">?</div>
+        </div>
+
+        <div class="choices">
+            <button class="choice-btn" data-choice="rock">
+                <div class="choice-icon">🪨</div>
+                <div class="choice-label">ROCK</div>
+            </button>
+            <button class="choice-btn" data-choice="paper">
+                <div class="choice-icon">📄</div>
+                <div class="choice-label">PAPER</div>
+            </button>
+            <button class="choice-btn" data-choice="scissors">
+                <div class="choice-icon">✂️</div>
+                <div class="choice-label">SCISSORS</div>
+            </button>
+        </div>
+
+        <div class="feedback-message" id="feedback"></div>
+    </div>
+
+    <div class="result-popup" id="resultPopup">
+        <div class="result-title" id="resultTitle">GAME OVER</div>
+        <div class="result-message" id="resultMessage"></div>
+        <button class="close-popup" id="closePopup">PLAY AGAIN</button>
+    </div>
+
+    <audio id="winSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" preload="auto"></audio>
+    <audio id="loseSound" src="https://assets.mixkit.co/sfx/preview/mixkit-retro-arcade-lose-2027.mp3" preload="auto"></audio>
+    <audio id="tieSound" src="https://assets.mixkit.co/sfx/preview/mixkit-neutral-game-notification-951.mp3" preload="auto"></audio>
+
+    <script>
+        // DOM Elements
+        const choiceBtns = document.querySelectorAll('.choice-btn');
+        const playerHand = document.querySelector('.player-hand');
+        const computerHand = document.querySelector('.computer-hand');
+        const playerScoreEl = document.querySelector('.player-score .score-value');
+        const computerScoreEl = document.querySelector('.computer-score .score-value');
+        const feedbackEl = document.getElementById('feedback');
+        const resultPopup = document.getElementById('resultPopup');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultMessage = document.getElementById('resultMessage');
+        const closePopupBtn = document.getElementById('closePopup');
+        
+        // Audio elements
+        const winSound = document.getElementById('winSound');
+        const loseSound = document.getElementById('loseSound');
+        const tieSound = document.getElementById('tieSound');
+
+        // Game state
+        let playerScore = 0;
+        let computerScore = 0;
+        let gameOver = false;
+        
+        // Emoji mappings
+        const emojis = {
+            rock: '🪨',
+            paper: '📄',
+            scissors: '✂️'
+        };
+
+        // Feedback messages
+        const winMessages = [
+            "Great job!",
+            "You're on fire!",
+            "Nice one!",
+            "You're winning!",
+            "Computer didn't see that coming!"
+        ];
+
+        const loseMessages = [
+            "Try again!",
+            "You'll get it next time!",
+            "Don't give up!",
+            "The computer got lucky!",
+            "Shake it off!"
+        ];
+
+        const tieMessages = [
+            "Tie game!",
+            "Same choice!",
+            "Try something different!",
+            "It's a standoff!",
+            "Equal minds think alike!"
+        ];
+
+        // Initialize game
+        function init() {
+            choiceBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (!gameOver) {
+                        const choice = btn.dataset.choice;
+                        playRound(choice);
+                    }
+                });
+            });
+            
+            closePopupBtn.addEventListener('click', () => {
+                resetGame();
+                resultPopup.classList.remove('show');
+            });
+        }
+
+        // Main game function
+        function playRound(playerChoice) {
+            // Show player choice
+            playerHand.textContent = emojis[playerChoice];
+            playerHand.classList.add('bounce');
+            
+            // Computer "thinks" for a moment before choosing
+            setTimeout(() => {
+                // Get computer choice
+                const computerChoice = getComputerChoice();
+                computerHand.textContent = emojis[computerChoice];
+                computerHand.classList.add('bounce');
+                
+                // Determine result
+                const result = determineWinner(playerChoice, computerChoice);
+                
+                // Update scores
+                if (result === 'YOU WIN!') playerScore++;
+                if (result === 'YOU LOSE!') computerScore++;
+                
+                // Update UI
+                updateScore();
+                showFeedback(result, playerChoice, computerChoice);
+                playResultSound(result);
+                
+                // Check for game over
+                if (playerScore >= 5 || computerScore >= 5) {
+                    endGame();
+                }
+                
+                // Reset animations
+                setTimeout(() => {
+                    playerHand.classList.remove('bounce');
+                    computerHand.classList.remove('bounce');
+                }, 1000);
+            }, 500);
+        }
+
+        // Computer choice (random)
+        function getComputerChoice() {
+            const choices = ['rock', 'paper', 'scissors'];
+            return choices[Math.floor(Math.random() * 3)];
+        }
+
+        // Determine winner
+        function determineWinner(player, computer) {
+            if (player === computer) return 'TIE';
+            
+            const winConditions = {
+                rock: 'scissors',
+                paper: 'rock',
+                scissors: 'paper'
+            };
+            
+            return winConditions[player] === computer ? 'YOU WIN!' : 'YOU LOSE!';
+        }
+
+        // Update score display
+        function updateScore() {
+            playerScoreEl.textContent = playerScore;
+            computerScoreEl.textContent = computerScore;
+            
+            // Add animation to score that changed
+            if (playerScoreEl.textContent !== playerScoreEl.dataset.lastValue) {
+                playerScoreEl.parentElement.classList.add('shake');
+                setTimeout(() => {
+                    playerScoreEl.parentElement.classList.remove('shake');
+                }, 500);
+                playerScoreEl.dataset.lastValue = playerScoreEl.textContent;
+            }
+            
+            if (computerScoreEl.textContent !== computerScoreEl.dataset.lastValue) {
+                computerScoreEl.parentElement.classList.add('shake');
+                setTimeout(() => {
+                    computerScoreEl.parentElement.classList.remove('shake');
+                }, 500);
+                computerScoreEl.dataset.lastValue = computerScoreEl.textContent;
+            }
+        }
+
+        // Show feedback message
+        function showFeedback(result, playerChoice, computerChoice) {
+            let message = '';
+            let feedbackClass = '';
+            
+            if (result === 'TIE') {
+                message = tieMessages[Math.floor(Math.random() * tieMessages.length)];
+                feedbackClass = 'tie-feedback';
+            } else if (result === 'YOU WIN!') {
+                message = winMessages[Math.floor(Math.random() * winMessages.length)];
+                feedbackClass = 'win-feedback';
+            } else {
+                message = loseMessages[Math.floor(Math.random() * loseMessages.length)];
+                feedbackClass = 'lose-feedback';
+            }
+            
+            feedbackEl.textContent = message;
+            feedbackEl.className = 'feedback-message ' + feedbackClass;
+        }
+
+        // Play appropriate sound
+        function playResultSound(result) {
+            if (result === 'YOU WIN!') {
+                winSound.currentTime = 0;
+                winSound.play();
+            } else if (result === 'YOU LOSE!') {
+                loseSound.currentTime = 0;
+                loseSound.play();
+            } else {
+                tieSound.currentTime = 0;
+                tieSound.play();
+            }
+        }
+
+        // End game and show results
+        function endGame() {
+            gameOver = true;
+            
+            resultTitle.textContent = 'GAME OVER';
+            
+            if (playerScore > computerScore) {
+                resultMessage.textContent = `You won ${playerScore}-${computerScore}! Congratulations!`;
+                resultTitle.style.background = 'linear-gradient(to right, #4CAF50, #2E7D32)';
+            } else {
+                resultMessage.textContent = `You lost ${playerScore}-${computerScore}. Better luck next time!`;
+                resultTitle.style.background = 'linear-gradient(to right, #FF5E5B, #D32F2F)';
+            }
+            
+            resultPopup.classList.add('show');
+        }
+
+        // Reset game
+        function resetGame() {
+            playerScore = 0;
+            computerScore = 0;
+            gameOver = false;
+            
+            playerScoreEl.textContent = '0';
+            computerScoreEl.textContent = '0';
+            
+            playerHand.textContent = '?';
+            computerHand.textContent = '?';
+            
+            feedbackEl.textContent = '';
+            feedbackEl.className = 'feedback-message';
+        }
+
+        // Start the game
+        init();
+    </script>
 </body>
-</html>
+  </html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock-Paper-Scissors: First to 5!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF5E5B;
+            --secondary: #00CECB;
+            --dark: #2D3047;
+            --light: #FFEDDF;
+            --accent: #FF9B71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 2rem;
+            background: rgba(255,255,255,0.1);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .score {
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .score-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        .player-score .score-value {
+            color: var(--secondary);
+        }
+
+        .computer-score .score-value {
+            color: var(--primary);
+        }
+
+        .choices {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            width: 100%;
+        }
+
+        .choice-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .choice-btn:hover {
+            transform: translateY(-10px);
+        }
+
+        .choice-btn:active {
+            transform: scale(0.95);
+        }
+
+        .choice-icon {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .choice-label {
+            font-size: 1.2rem;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+
+        .choice-btn:hover .choice-icon {
+            transform: scale(1.1);
+        }
+
+        .battle-area {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .player-hand, .computer-hand {
+            width: 150px;
+            height: 150px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+        }
+
+        .vs {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: bold;
+            background: var(--accent);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .result-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            color: var(--dark);
+            padding: 2rem 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 100;
+            text-align: center;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-width: 80%;
+        }
+
+        .result-popup.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .result-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-popup {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-popup:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 94, 91, 0.4);
+        }
+
+        .feedback-message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            min-height: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .win-feedback {
+            color: var(--secondary);
+        }
+
+        .lose-feedback {
+            color: var(--primary);
+        }
+
+        .tie-feedback {
+            color: var(--accent);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        .shake {
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .bounce {
+            animation: bounce 0.5s ease;
+        }
+
+        @media (max-width: 768px) {
+            .choices {
+                gap: 1rem;
+            }
+            
+            .choice-btn {
+                width: 90px;
+                height: 90px;
+            }
+            
+            .choice-icon {
+                font-size: 3rem;
+            }
+            
+            .player-hand, .computer-hand {
+                width: 100px;
+                height: 100px;
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ROCK PAPER SCISSORS</h1>
+        <p class="subtitle">First to 5 points wins!</p>
+    </header>
+
+    <div class="game-container">
+        <div class="scoreboard">
+            <div class="score player-score">
+                <div>YOU</div>
+                <div class="score-value">0</div>
+            </div>
+            <div class="score computer-score">
+                <div>COMPUTER</div>
+                <div class="score-value">0</div>
+            </div>
+        </div>
+
+        <div class="battle-area">
+            <div class="player-hand">?</div>
+            <div class="vs">VS</div>
+            <div class="computer-hand">?</div>
+        </div>
+
+        <div class="choices">
+            <button class="choice-btn" data-choice="rock">
+                <div class="choice-icon">🪨</div>
+                <div class="choice-label">ROCK</div>
+            </button>
+            <button class="choice-btn" data-choice="paper">
+                <div class="choice-icon">📄</div>
+                <div class="choice-label">PAPER</div>
+            </button>
+            <button class="choice-btn" data-choice="scissors">
+                <div class="choice-icon">✂️</div>
+                <div class="choice-label">SCISSORS</div>
+            </button>
+        </div>
+
+        <div class="feedback-message" id="feedback"></div>
+    </div>
+
+    <div class="result-popup" id="resultPopup">
+        <div class="result-title" id="resultTitle">GAME OVER</div>
+        <div class="result-message" id="resultMessage"></div>
+        <button class="close-popup" id="closePopup">PLAY AGAIN</button>
+    </div>
+
+    <audio id="winSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" preload="auto"></audio>
+    <audio id="loseSound" src="https://assets.mixkit.co/sfx/preview/mixkit-retro-arcade-lose-2027.mp3" preload="auto"></audio>
+    <audio id="tieSound" src="https://assets.mixkit.co/sfx/preview/mixkit-neutral-game-notification-951.mp3" preload="auto"></audio>
+
+    <script>
+        // DOM Elements
+        const choiceBtns = document.querySelectorAll('.choice-btn');
+        const playerHand = document.querySelector('.player-hand');
+        const computerHand = document.querySelector('.computer-hand');
+        const playerScoreEl = document.querySelector('.player-score .score-value');
+        const computerScoreEl = document.querySelector('.computer-score .score-value');
+        const feedbackEl = document.getElementById('feedback');
+        const resultPopup = document.getElementById('resultPopup');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultMessage = document.getElementById('resultMessage');
+        const closePopupBtn = document.getElementById('closePopup');
+        
+        // Audio elements
+        const winSound = document.getElementById('winSound');
+        const loseSound = document.getElementById('loseSound');
+        const tieSound = document.getElementById('tieSound');
+
+        // Game state
+        let playerScore = 0;
+        let computerScore = 0;
+        let gameOver = false;
+        
+        // Emoji mappings
+        const emojis = {
+            rock: '🪨',
+            paper: '📄',
+            scissors: '✂️'
+        };
+
+        // Feedback messages
+        const winMessages = [
+            "Great job!",
+            "You're on fire!",
+            "Nice one!",
+            "You're winning!",
+            "Computer didn't see that coming!"
+        ];
+
+        const loseMessages = [
+            "Try again!",
+            "You'll get it next time!",
+            "Don't give up!",
+            "The computer got lucky!",
+            "Shake it off!"
+        ];
+
+        const tieMessages = [
+            "Tie game!",
+            "Same choice!",
+            "Try something different!",
+            "It's a standoff!",
+            "Equal minds think alike!"
+        ];
+
+        // Initialize game
+        function init() {
+            choiceBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (!gameOver) {
+                        const choice = btn.dataset.choice;
+                        playRound(choice);
+                    }
+                });
+            });
+            
+            closePopupBtn.addEventListener('click', () => {
+                resetGame();
+                resultPopup.classList.remove('show');
+            });
+        }
+
+        // Main game function
+        function playRound(playerChoice) {
+            // Show player choice
+            playerHand.textContent = emojis[playerChoice];
+            playerHand.classList.add('bounce');
+            
+            // Computer "thinks" for a moment before choosing
+            setTimeout(() => {
+                // Get computer choice
+                const computerChoice = getComputerChoice();
+                computerHand.textContent = emojis[computerChoice];
+                computerHand.classList.add('bounce');
+                
+                // Determine result
+                const result = determineWinner(playerChoice, computerChoice);
+                
+                // Update scores
+                if (result === 'YOU WIN!') playerScore++;
+                if (result === 'YOU LOSE!') computerScore++;
+                
+                // Update UI
+                updateScore();
+                showFeedback(result, playerChoice, computerChoice);
+                playResultSound(result);
+                
+                // Check for game over
+                if (playerScore >= 5 || computerScore >= 5) {
+                    endGame();
+                }
+                
+                // Reset animations
+                setTimeout(() => {
+                    playerHand.classList.remove('bounce');
+                    computerHand.classList.remove('bounce');
+                }, 1000);
+            }, 500);
+        }
+
+        // Computer choice (random)
+        function getComputerChoice() {
+            const choices = ['rock', 'paper', 'scissors'];
+            return choices[Math.floor(Math.random() * 3)];
+        }
+
+        // Determine winner
+        function determineWinner(player, computer) {
+            if (player === computer) return 'TIE';
+            
+            const winConditions = {
+                rock: 'scissors',
+                paper: 'rock',
+                scissors: 'paper'
+            };
+            
+            return winConditions[player] === computer ? 'YOU WIN!' : 'YOU LOSE!';
+        }
+
+        // Update score display
+        function updateScore() {
+            playerScoreEl.textContent = playerScore;
+            computerScoreEl.textContent = computerScore;
+            
+            // Add animation to score that changed
+            if (playerScoreEl.textContent !== playerScoreEl.dataset.lastValue) {
+                playerScoreEl.parentElement.classList.add('shake');
+                setTimeout(() => {
+                    playerScoreEl.parentElement.classList.remove('shake');
+                }, 500);
+                playerScoreEl.dataset.lastValue = playerScoreEl.textContent;
+            }
+            
+            if (computerScoreEl.textContent !== computerScoreEl.dataset.lastValue) {
+                computerScoreEl.parentElement.classList.add('shake');
+                setTimeout(() => {
+                    computerScoreEl.parentElement.classList.remove('shake');
+                }, 500);
+                computerScoreEl.dataset.lastValue = computerScoreEl.textContent;
+            }
+        }
+
+        // Show feedback message
+        function showFeedback(result, playerChoice, computerChoice) {
+            let message = '';
+            let feedbackClass = '';
+            
+            if (result === 'TIE') {
+                message = tieMessages[Math.floor(Math.random() * tieMessages.length)];
+                feedbackClass = 'tie-feedback';
+            } else if (result === 'YOU WIN!') {
+                message = winMessages[Math.floor(Math.random() * winMessages.length)];
+                feedbackClass = 'win-feedback';
+            } else {
+                message = loseMessages[Math.floor(Math.random() * loseMessages.length)];
+                feedbackClass = 'lose-feedback';
+            }
+            
+            feedbackEl.textContent = message;
+            feedbackEl.className = 'feedback-message ' + feedbackClass;
+        }
+
+        // Play appropriate sound
+        function playResultSound(result) {
+            if (result === 'YOU WIN!') {
+                winSound.currentTime = 0;
+                winSound.play();
+            } else if (result === 'YOU LOSE!') {
+                loseSound.currentTime = 0;
+                loseSound.play();
+            } else {
+                tieSound.currentTime = 0;
+                tieSound.play();
+            }
+        }
+
+        // End game and show results
+        function endGame() {
+            gameOver = true;
+            
+            resultTitle.textContent = 'GAME OVER';
+            
+            if (playerScore > computerScore) {
+                resultMessage.textContent = `You won ${playerScore}-${computerScore}! Congratulations!`;
+                resultTitle.style.background = 'linear-gradient(to right, #4CAF50, #2E7D32)';
+            } else {
+                resultMessage.textContent = `You lost ${playerScore}-${computerScore}. Better luck next time!`;
+                resultTitle.style.background = 'linear-gradient(to right, #FF5E5B, #D32F2F)';
+            }
+            
+            resultPopup.classList.add('show');
+        }
+
+        // Reset game
+        function resetGame() {
+            playerScore = 0;
+            computerScore = 0;
+            gameOver = false;
+            
+            playerScoreEl.textContent = '0';
+            computerScoreEl.textContent = '0';
+            
+            playerHand.textContent = '?';
+            computerHand.textContent = '?';
+            
+            feedbackEl.textContent = '';
+            feedbackEl.className = 'feedback-message';
+        }
+
+        // Start the game
+        init();
+    </script>
+</body>
+              </html>
